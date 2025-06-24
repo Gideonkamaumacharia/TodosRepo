@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoList from "../components/TodoList";
 import TodoForm from "../components/TodoForm";
+import Modal from "../components/ui/Modal.jsx";
+import TodoItem from "../components/TodoItem.jsx";
+import About from "./About.jsx";
 
 
 const url = "https://jsonplaceholder.typicode.com/todos";
@@ -9,6 +12,12 @@ const TodoListApp = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+
+
+   const [openModal, setOpenModal] = useState(false);
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [deletedTodoName, setDeletedTodoName] = useState("");
+    const [todoToDeleteId, setTodoDeleteId] = useState(null);
 
   const [todoData, setTodoData] = useState({
     id: null,
@@ -84,9 +93,24 @@ const TodoListApp = () => {
     });
   };
 
+  //red button -- opens the modal
   const handleDeleteTodo = (id) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    setTodoDeleteId(id)
+    setOpenModal(true);
+    // setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
+
+  //Amber button -- deletes the todo item
+  const handleDelete = () => {
+    const todoToBeDeleted = todos.find(todo => todo.id === todoToDeleteId);
+    setDeletedTodoName(todoToBeDeleted.todoName);
+    setTodos((prevTodos) =>
+      prevTodos.filter((todo) => todo.id !== todoToDeleteId)
+    );
+
+    setOpenModal(false);
+    setIsSuccessModalOpen(true)
+  }
 
   const handleUpdate = (id) => {
     setIsEditing(true);
@@ -98,8 +122,15 @@ const TodoListApp = () => {
       desc: todoToUpdate.desc,
       completed: todoToUpdate.completed,
     });
+
+    setOpenModal(false);
   };
 
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+    setDeletedTodoName("");
+  }
 
   useEffect(() =>{
     async function getData() {
@@ -156,12 +187,47 @@ const TodoListApp = () => {
         <p className="text-center text-gray-500">Loading...</p>
       ) : (
         <div>
+
+
+         <Modal show={openModal} modalClosed={() => setOpenModal(false)}>
+           <p className="text-center text-amber-800 text-3xl uppercase">Confirm Delete</p>
+
+           <p className="text-center text-gray-700 mt-2">Are you sure you want to delete:
+             <span className="font-semibold">{deletedTodoName}</span>
+           </p>
+           <div className="flex justify-between mt-4">
+             <button className="bg-blue-400 px-4 py-2 rounded-xl"  onClick={() => setOpenModal(false)}>Cancel</button>
+             <button className="bg-amber-800 px-4 py-2 rounded-xl"  onClick={handleDelete}>Delete</button>
+           </div>
+         </Modal>
+
+          <Modal show={isSuccessModalOpen} modalClosed={closeSuccessModal}>
+            <p className="text-center text-green-600 text-3xl uppercase">
+              Success!
+            </p>
+            <p className="text-center text-gray-700 mt-2">
+              Successfully deleted item:{" "}
+              <span className="font-semibold">{deletedTodoName}</span>.
+            </p>
+            <div className="flex justify-center mt-6">
+              <button
+                className="bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded-xl text-white font-medium transition duration-200"
+                onClick={closeSuccessModal}
+              >
+                Close
+              </button>
+            </div>
+
+          </Modal>
+
+
           {/* div rendering our todo list items */}
           <TodoList
             myTodos={todos}
             handleDeleteTodo={handleDeleteTodo}
             handleUpdate={handleUpdate}
           />
+
         </div>
       )}
 
