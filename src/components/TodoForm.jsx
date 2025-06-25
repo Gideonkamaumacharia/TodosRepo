@@ -16,14 +16,6 @@ const TodoForm = ({ todoData, handleInputChange, handleFormSubmit, isEditing }) 
           value={todoData.todoName}
           onChange={handleInputChange}
         />
-        <input
-          type="text"
-          className="border border-gray-300 p-1.5 rounded-md "
-          placeholder="Enter description"
-          id="desc"
-          value={todoData.desc}
-          onChange={handleInputChange}
-        />
         <div className="flex gap-3 items-center">
           <input
             type="checkbox"

@@ -8,8 +8,6 @@ const TodoItem = ({todo, handleUpdate, handleDeleteTodo}) => {
         <h1 className="text-lg">
           <span className="font-semibold mr-2"> Name:</span> {todo.todoName}
         </h1>
-        <h1 className="text-gray-600">
-            <span className="font-semibold mr-2" >Desc: </span> {todo.desc}</h1>
       </div>
       <div className="text-sm mt-1" >{todo.isComplete && "✅"}</div>
 

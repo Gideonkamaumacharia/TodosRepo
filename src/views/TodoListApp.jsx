@@ -22,7 +22,6 @@ const TodoListApp = () => {
   const [todoData, setTodoData] = useState({
     id: null,
     todoName: "",
-    desc: "",
     completed: false,
   });
 
@@ -35,7 +34,7 @@ const TodoListApp = () => {
       setIsLoading(true);
       try {
         const response = await fetch(url);
-        console.log(response);
+        //console.log(response);
 
         if (!response.ok) {
           setError("Failed To Fetch The data")
@@ -48,7 +47,6 @@ const TodoListApp = () => {
         setTodos(json.slice(0, 20).map(todo => ({
           id: todo.id,
           todoName: todo.title,
-          desc: todo.description || "No description available",
           completed: todo.completed,
         })));
 
@@ -85,7 +83,6 @@ const TodoListApp = () => {
             ? {
                 ...todo,
                 todoName: todoData.todoName,
-                desc: todoData.desc,
                 completed: todoData.completed,
               }
             : todo
@@ -105,7 +102,6 @@ const TodoListApp = () => {
 
     setTodoData({
       todoName: "",
-      desc: "",
       completed: false,
     });
   };
@@ -120,6 +116,7 @@ const TodoListApp = () => {
   //Amber button -- deletes the todo item
   const handleDelete = () => {
     const todoToBeDeleted = todos.find(todo => todo.id === todoToDeleteId);
+  console.log("Todo to be deleted: ", todoToBeDeleted);
     setDeletedTodoName(todoToBeDeleted.todoName);
     setTodos((prevTodos) =>
       prevTodos.filter((todo) => todo.id !== todoToDeleteId)
@@ -140,7 +137,6 @@ const TodoListApp = () => {
     setTodoData({
       id: todoToUpdate.id,
       todoName: todoToUpdate.todoName,
-      desc: todoToUpdate.desc,
       completed: todoToUpdate.completed,
     });
 
@@ -153,7 +149,7 @@ const TodoListApp = () => {
     setDeletedTodoName("");
   }
 
-
+  const todoToBeDeleted = todos.find(todo => todo.id === todoToDeleteId);
 
   return (
     <div>
@@ -179,8 +175,8 @@ const TodoListApp = () => {
          <Modal show={openModal} modalClosed={() => setOpenModal(false)}>
            <p className="text-center text-amber-800 text-3xl uppercase">Confirm Delete</p>
 
-           <p className="text-center text-gray-700 mt-2">Are you sure you want to delete:
-             <span className="font-semibold">{deletedTodoName}</span>
+           <p className="text-center text-gray-700 mt-2 mr-3">Are you sure you want to delete
+             <span className="font-semibold ml-2">{todoToBeDeleted?.todoName}</span> ?
            </p>
            <div className="flex justify-between mt-4">
              <button className="bg-blue-400 px-4 py-2 rounded-xl"  onClick={() => setOpenModal(false)}>Cancel</button>

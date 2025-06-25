@@ -24,7 +24,7 @@ const UsersList = () => {
 
                 const json = await response.json();
                 setUsers(json)
-                console.log("Users: ", json);
+                //console.log("Users: ", json);
 
                 setIsLoading(false);
             } catch (error) {
