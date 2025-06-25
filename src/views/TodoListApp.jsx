@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import TodoList from "../components/TodoList";
 import TodoForm from "../components/TodoForm";
 import Modal from "../components/ui/Modal.jsx";
-import TodoItem from "../components/TodoItem.jsx";
-import About from "./About.jsx";
+import {useNavigate} from "react-router-dom";
+
 
 
 const url = "https://jsonplaceholder.typicode.com/todos";
 const TodoListApp = () => {
   const [todos, setTodos] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState("")
 
 
@@ -25,6 +25,45 @@ const TodoListApp = () => {
     desc: "",
     completed: false,
   });
+
+  const navigate = useNavigate();
+
+
+  useEffect(() =>{
+    async function getData() {
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(url);
+        console.log(response);
+
+        if (!response.ok) {
+          setError("Failed To Fetch The data")
+          throw new Error(`Response status: ${response.status}`);
+        }
+
+        const json = await response.json();
+
+
+        setTodos(json.slice(0, 10).map(todo => ({
+          id: todo.id,
+          todoName: todo.title,
+          desc: "No description available",
+          completed: todo.completed,
+        })));
+
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error.message);
+      }finally{
+        setIsLoading(false);
+      }
+    }
+
+    getData();
+  },[])
+
+
 
   const handleInputChange = (event) => {
     setTodoData({
@@ -62,28 +101,6 @@ const TodoListApp = () => {
         },
       ]);
 
-      // try {
-      //   const response = await fetch(url, {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(
-      //       {
-      //             ...todoData,
-      //             id: Math.floor(Math.random() * 1000),
-      //           },
-      //     ),
-      //   });
-  
-      //   if (response.ok) {
-      //     toast.success("Message sent successfully! 🎉");
-      //     reset();
-      //   } else {
-      //     const errorDetails = await response.json();
-      //     toast.error("Failed to send message. Please try again.");
-      //     console.error("Error sending email:", errorDetails.message);
-      //   }
     }
 
     setTodoData({
@@ -109,7 +126,11 @@ const TodoListApp = () => {
     );
 
     setOpenModal(false);
-    setIsSuccessModalOpen(true)
+
+
+    //navigate to /users
+    navigate(`/users`);
+    // setIsSuccessModalOpen(true)
   }
 
   const handleUpdate = (id) => {
@@ -132,40 +153,6 @@ const TodoListApp = () => {
     setDeletedTodoName("");
   }
 
-  useEffect(() =>{
-    async function getData() {
-
-      setIsLoading(true);
-      try {
-        const response = await fetch(url);
-        console.log(response);
-        
-        if (!response.ok) {
-          setError("Failed To Fetch The data")
-          throw new Error(`Response status: ${response.status}`);
-        }
-
-        const json = await response.json();
-       
-        
-      setTodos(json.slice(0, 10).map(todo => ({
-          id: todo.id,
-          todoName: todo.title,
-          desc: "No description available",
-          completed: todo.completed,
-        })));
-        
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error.message);
-      }finally{
-        setIsLoading(false);
-      }
-    }
-    
-    getData();
-  },[])
-  
 
 
   return (

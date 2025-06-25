@@ -2,12 +2,6 @@ import React from "react"
 import TodoItem from "./TodoItem"
 
 const TodoCategory = ({ title, todos, handleUpdate, handleDeleteTodo, titleColor }) => {
-    // And operators &&
-    //  OR operators ||
-    //  Ternary operators ?:
-    //   { ... ? : ....}
-    // ${} //   template literals
-
 
     return (
         <div className="mb-8">
