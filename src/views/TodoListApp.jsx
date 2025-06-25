@@ -45,10 +45,10 @@ const TodoListApp = () => {
         const json = await response.json();
 
 
-        setTodos(json.slice(0, 10).map(todo => ({
+        setTodos(json.slice(0, 20).map(todo => ({
           id: todo.id,
           todoName: todo.title,
-          desc: "No description available",
+          desc: todo.description || "No description available",
           completed: todo.completed,
         })));
 
