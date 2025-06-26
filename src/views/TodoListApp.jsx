@@ -6,6 +6,8 @@ import {useNavigate} from "react-router-dom";
 
 
 
+
+
 const url = "https://jsonplaceholder.typicode.com/todos";
 const TodoListApp = () => {
   const [todos, setTodos] = useState([]);
@@ -210,7 +212,7 @@ const TodoListApp = () => {
             handleDeleteTodo={handleDeleteTodo}
             handleUpdate={handleUpdate}
           />
-
+      
         </div>
       )}
 
