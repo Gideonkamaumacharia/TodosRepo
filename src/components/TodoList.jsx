@@ -5,7 +5,7 @@ import TodoCategory from "./TodoCategory.jsx";
 const TodoList = ({ myTodos, handleDeleteTodo, handleUpdate}) => {
     const completedTodos = myTodos.filter((todo) => todo.completed);
     const inProgressTodos = myTodos.filter((todo) => !todo.completed);
-    console.log("Todos: ", myTodos);
+   
    
 
   return (
