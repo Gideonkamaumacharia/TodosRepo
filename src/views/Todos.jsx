@@ -1,6 +1,9 @@
 import {useState, useEffect} from "react";
 import {Outlet} from "react-router-dom";
 import TodosNav from "../navbar/TodosNav.jsx";
+import { TodosContext } from "../components/context/TodosContext"; 
+
+
 
 const url = "https://jsonplaceholder.typicode.com/todos";
 export default function Todos() {
@@ -27,11 +30,10 @@ export default function Todos() {
                 setTodos(json.slice(0, 10).map(todo => ({
                     id: todo.id,
                     todoName: todo.title,
-                    desc: "No description available",
                     completed: todo.completed,
                 })));
 
-                console.log(todos);
+                
 
                 setIsLoading(false);
             } catch (error) {
@@ -44,32 +46,30 @@ export default function Todos() {
         getData();
     },[])
 
+    useEffect(() => {
+        console.log("Fetched Todos:",todos);
+    });
+
 
     return (
-        <div className="flex flex-col justify-center items-center ">
-            <h1 className="text-3xl font-bold">Todos Page</h1>
+    <TodosContext.Provider value={{ todos, isLoading, error }}>
+      <div className="flex flex-col justify-center items-center">
+        <h1 className="text-3xl font-bold">Todos Page</h1>
 
-            <TodosNav />
+        <TodosNav />
 
-            <div className="bg-amber-800 p-10 mb-4" >
-               <p>Hello World</p>
-
-            </div>
-
-            <div className="bg-amber-300 p-10" >
-                <p>Hello Devs </p>
-                <Outlet/>
-                <p>After Children routes were rendered</p>
-            </div>
-
-            {isLoading ? (
-                <p className="text-center text-gray-500">Loading...</p>
-            ) : (
-                <div className="w-full max-w-4xl mx-auto p-4">
-                </div>
-            )}
-
-            { error && <p className="text-center text-red-500">{error}</p>}
+        <div className="bg-amber-300 p-10 w-full">
+          <Outlet />
         </div>
-    );
+
+        {isLoading && (
+          <p className="text-center text-gray-500 mt-4">Loading...</p>
+        )}
+
+        {error && (
+          <p className="text-center text-red-500 mt-4">{error}</p>
+        )}
+      </div>
+    </TodosContext.Provider>
+  );
 }
