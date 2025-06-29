@@ -3,7 +3,7 @@ import TodoItem from "../components/TodoItem";
 import { useTodos } from "../components/context/TodosContext";
 
 export default function CompletedTodos() {
-  const { todos } = useTodos();
+  const { todos,handleUpdate,handleDeleteTodo } = useTodos();
 
   const completedTodos = todos.filter((todo) => todo.completed);
 
@@ -17,8 +17,8 @@ export default function CompletedTodos() {
           <TodoItem
             key={todo.id}
             todo={todo}
-            handleUpdate={() => {}}
-            handleDeleteTodo={() => {}}
+            handleUpdate={handleUpdate}
+            handleDeleteTodo={handleDeleteTodo}
           />
         ))
       )}
