@@ -3,7 +3,7 @@ import TodoItem from "../components/TodoItem";
 import { useTodos } from "../components/context/TodosContext";
 
 export default function TodosInProgress() {
-  const { todos } = useTodos();
+  const { todos, handleDeleteTodo, handleUpdate  } = useTodos();
 
   const inProgressTodos = todos.filter((todo) => !todo.completed);
   console.log("In Progress Todos: ", inProgressTodos);
@@ -18,8 +18,8 @@ export default function TodosInProgress() {
           <TodoItem
             key={todo.id}
             todo={todo}
-            handleUpdate={() => {}}
-            handleDeleteTodo={() => {}}
+            handleUpdate={handleUpdate}
+            handleDeleteTodo={handleDeleteTodo}
           />
         ))
       )}
