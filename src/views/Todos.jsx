@@ -52,7 +52,7 @@ export default function Todos() {
 
 
     return (
-    <TodosContext.Provider value={{ todos, isLoading, error }}>
+    <TodosContext value={{ todos, isLoading, error }}>
       <div className="flex flex-col justify-center items-center">
         <h1 className="text-3xl font-bold">Todos Page</h1>
 
@@ -70,6 +70,6 @@ export default function Todos() {
           <p className="text-center text-red-500 mt-4">{error}</p>
         )}
       </div>
-    </TodosContext.Provider>
+    </TodosContext>
   );
 }
