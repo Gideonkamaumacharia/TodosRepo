@@ -9,8 +9,7 @@ export default function User({}) {
     const [user, setUser] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
-    // const [searchParams,setSearchParams] = useSearchParams();
-    // const search = searchParams.get('search') || ""
+
 
     const {id} = useParams();
     // todo useSearchParams()

@@ -50,9 +50,21 @@ export default function Todos() {
         console.log("Fetched Todos:",todos);
     });
 
+     function handleDeleteTodo(id) {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  }
+
+  function handleUpdate(id) {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
 
     return (
-    <TodosContext value={{ todos, isLoading, error }}>
+    <TodosContext value={{ todos, isLoading, error,handleDeleteTodo,handleUpdate }}>
       <div className="flex flex-col justify-center items-center">
         <h1 className="text-3xl font-bold">Todos Page</h1>
 
