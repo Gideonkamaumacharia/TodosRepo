@@ -1,4 +1,4 @@
-import {useParams, useSearchParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import UserCard from "../../components/users/UserCard.jsx";
 import MoreDetailedUserCard from "../../components/users/MoreDetailedUserCard.jsx";
@@ -9,6 +9,8 @@ export default function User({}) {
     const [user, setUser] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
+    // const [searchParams,setSearchParams] = useSearchParams();
+    // const search = searchParams.get('search') || ""
 
     const {id} = useParams();
     // todo useSearchParams()
@@ -36,8 +38,10 @@ export default function User({}) {
                 setIsLoading(false);
             }
         }
+
         getData();
     },[])
+
 
 
     return (
@@ -45,7 +49,10 @@ export default function User({}) {
             <h1 className="text-3xl font-bold text-center my-5">User Details</h1>
             {isLoading ? (
                 <p className="text-center text-gray-500">Loading...</p>
-            ) : (
+            ) : error ? (
+                <p className="text-red-500 text-center">{error}</p>
+            ) :
+            (
                 <div className="my-5 w-full">
                     <div className=" flex justify-center">
                         <MoreDetailedUserCard key={user.id} user={user} />
